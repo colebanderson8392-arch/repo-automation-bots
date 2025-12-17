@@ -138,6 +138,6 @@ For questions about these metrics or to propose improvements, please:
 
 ## References
 
-- [User Survey Results 2020](https://internal-link) - Original time estimates
+- User Survey Results 2020 - Original time estimates (internal documentation)
 - [Bot Architecture](../architecture.png) - Overall system design
 - [Contributing Guidelines](../CONTRIBUTING.md) - How to contribute improvements
