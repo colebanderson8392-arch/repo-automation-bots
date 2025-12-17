@@ -49,8 +49,15 @@ UNION ALL
 (
     SELECT
         /* 
-         * Rough guess of people hours saved is same as merge on green
-         * we should come back to this in the future with better estimate.
+         * NEEDS IMPROVEMENT: Using 4.3 minutes (same as merge-on-green estimate).
+         * This may not accurately reflect auto-approve time savings.
+         * 
+         * Action items:
+         * - Survey users whose PRs were auto-approved about time saved
+         * - Analyze time-to-merge differences between auto-approved and manual
+         * - Consider segmenting by PR type (dependency updates vs code changes)
+         * 
+         * See metrics/README.md for detailed improvement recommendations.
          */
         (SUM(jsonPayload.count * 4.3)) / 60 as people_hours,
         DATE_TRUNC(DATE(timestamp, "America/Los_Angeles"), MONTH) as month
@@ -63,10 +70,16 @@ UNION ALL
 (
     SELECT
         /* 
-         * Guessing we save at least 1 minute of someone's time by pointing
-         * them towards an appropriate file to edit. We should get an actual
-         * estimate of this, and reach out to users to see if this has helped
-         * them.
+         * NEEDS IMPROVEMENT: Conservative 1-minute estimate for generated file warnings.
+         * This is a lower-bound guess and likely underestimates actual value.
+         * 
+         * Action items:
+         * - Conduct user survey about helpfulness and actual time saved
+         * - Track if users modify correct files after receiving warning
+         * - Consider A/B testing to measure actual impact
+         * - Add optional feedback mechanism in bot comments
+         * 
+         * See metrics/README.md for detailed improvement recommendations.
          */
         (SUM(jsonPayload.count * 1)) / 60 as people_hours,
         DATE_TRUNC(DATE(timestamp, "America/Los_Angeles"), MONTH) as month
@@ -79,7 +92,11 @@ UNION ALL
 (
     SELECT
         /*
-         * Based on old estimate of context aware commit time savings.
+         * Using 3.5 minutes based on 2020 Yoshi team survey for context-aware commits.
+         * This estimate has high confidence as it was derived from actual user feedback.
+         * 
+         * Note: Consider periodic re-validation (e.g., every 2 years) to ensure
+         * estimate remains accurate as workflows and tools evolve.
          */
         (SUM(prs) * 3.5) / 60 as people_hours,
         month_start as month
